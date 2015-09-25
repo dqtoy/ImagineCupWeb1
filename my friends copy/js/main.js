@@ -1,4 +1,3 @@
-// FindFriends main Javascript file
 function send_post() {
 		var hr = new XMLHttpRequest();
 		var url = "send_post.php";
