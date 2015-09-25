@@ -2,10 +2,7 @@
 -- version 3.4.5
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jul 02, 2012 at 04:53 PM
--- Server version: 5.5.16
--- PHP Version: 5.3.8
+
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
