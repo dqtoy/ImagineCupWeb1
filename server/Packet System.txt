@@ -1,0 +1,179 @@
+
+Packet Specification
+--------------------
+
+Each packet is headed by a single byte detailing the id of the packet. The
+id specifies exactly what the packet contains.
+
+Each packet is delimited by COBS (Consistent Overhead Byte Stuffing). This
+will make the server recover from errors and malitious packet crafting by
+our resident hacker.
+
+strings are encoded as UTF-8 and are terminated by 0x00.
+integers are 4 byte
+floats are 4 byte
+bytes are one byte
+byte[] are always at the end of the packet and consume all remaining data
+
+The packet header is only one byte, then data begins.
+
+Server To Client Packets
+------------------------
+
+SERVER_ERROR
+	int	error code
+	String 	error detail
+
+	error codes:
+		0: unknown error
+		1: malformed packet
+		2: unknown packet id
+		3: invalid action
+		4: insufficent privilages
+		5: database error (usually invalid username)
+	more may be added later so don't assume that only 0, 1 & 2 are to be
+	used.
+
+AVATAR_SEND
+	string 	username
+	byte[]	data
+
+TEXT_SEND
+	byte	type
+	string 	text
+	string	from
+
+	type codes:
+		0: VoiceTranslation
+		1: ArenaMessage
+		2: NonArenaMessage
+
+ANNOTATE_TEXT
+	string	username
+	float	xPos
+	float 	yPos
+	float 	zPos
+	string	text
+
+AVATAR_UPADTE_OTHERS
+	string	usernames
+	byte[]	data
+
+ARENA_OTHER_JOINED
+	string 	username
+
+ARENA_OTHER_LEFT
+	string 	username
+	string 	reason
+
+ARENA_CLOSED
+	string 	reason
+
+ARENA_INVITE
+	string 	owner
+	string 	messege
+
+NEWS_FEED_SEND
+	int	type
+	byte[]	data
+
+FRIEND_SEND
+	string	username
+
+FRIEND_REQUEST
+	string 	username
+	string	text
+
+FRIEND_REMOVE
+	string	username
+
+STATUS_UPDATE
+	string 	username
+	string 	status
+
+HISTORY_SEND
+	byte	eventType
+	int		high order bits of the number of milliseconds since January 1, 1970, 00:00:00
+	int		low order bits of the number of milliseconds since January 1, 1970, 00:00:00
+	string	description (may be an empty string)
+
+LOGIN_OK
+	no data
+
+PREFERENCES_SEND
+	byte	data
+
+Client To Server Packets
+------------------------
+
+HISTORY_GET
+	int	length
+
+TEXT_SEND
+	byte	type
+	string	text
+	string	username
+
+FRIEND_REQUEST
+	string	username
+	string	text
+
+FRIEND_ACCEPT
+	string	username
+
+FRIEND_REJECT
+	string	username
+	
+FRIEND_REMOVE
+	string	username
+
+ARENA_CLOSE
+	string	reason
+
+ARENA_CREATE
+	no data
+
+ARENA_INVITE
+	string	username
+	string	text
+
+ARENA_LEAVE
+	string	reason
+
+ARENA_JOIN
+	string	username
+
+PREFERENCES_SET
+	byte	mask
+
+PREFERENCES_GET
+	no data
+
+STATUS_UPDATE
+	string	status
+
+NEWS_FEED_ADD
+	int		type
+	byte[]	data
+
+NEWS_FEED_GET
+	int		to
+	int		from
+
+AVATAR_SEND
+	byte[] data
+
+ANNOTATE_TEXT
+	float	xPos
+	float 	yPos
+	float 	zPos
+	string	text
+
+LOGIN
+	string	username
+	string	password
+	
+LOGIN_REGESTER
+	string	username
+	string	password
+	
